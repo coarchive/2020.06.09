@@ -42,3 +42,24 @@ could trip the debouncing mechanism.
 
 Aaaaand the `ResizeObserver` invokes events only before paint.
 Nice one! I solved a problem that didn't exist.
+
+Slightly worried, I went to check BZL. Surely the
+[`resize` event on `Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event)
+would be fired every time the inspect element pane was resized too, right?
+No. First of all, that's the `document` that's being resized. Not the Window.
+Ok well, what happens when we resize the `Window`? Well, you get a lot of events
+but debouncing them isn't even an issue since all we're looking for is a change in
+zoom, AKA `window.devicePixelRatio`.
+
+So what have I learned?
+
+- Check if something is a problem before trying to solve it
+- A cool way to debounce events using `window.requestAnimationFrame`
+- TypeScript exports and `.d.ts` files
+- This cursed `/// <reference types="path"/>` `.d.ts` import directive
+- Rollup's `rollup.config.cjs`
+- A few fields in the `package.json`
+
+BZL and SRO are still useful, though. Just not enough to be their own modules.
+I'll stick some TypeScript files in this repo that anyone (probably just me) can
+just grab and use.
